@@ -96,7 +96,11 @@ function sdk_incomingCall() {
 	$backData = sdk_json_decode(sdk_get_input());
 	$nukiid = $backData['nukiId'];
 	$periph_value_state = $backData['state'];
-	$periph_value_batterycritical = $backData['batteryCritical'];
+	// $periph_value_batterycritical = $backData['batteryCritical'];
+	// My comments : $backData['batteryCritical'] contains false (default) or true
+	// this prevents to update directly the eedomus batterycritical peripheral, which
+	// is waiting for 0 (Bon) or 100 (Critique) … I suggest this change:
+	$periph_value_batterycritical = $backData['batteryCritical'] ? 100 : 0;
 
 	$periph_id_state = loadVariable("periph_id_state$nukiid");
 	$periph_id_batterycritical = loadVariable("periph_id_batterycritical$nukiid");
